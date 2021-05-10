@@ -12,6 +12,7 @@ itsdangerous==1.1.0
 Jinja2==2.11.2
 MarkupSafe==1.1.1
 pycparser==2.20
+python-firebase==1.2
 python-telegram-bot==13.0
 pytz==2020.4
 requests==2.24.0
