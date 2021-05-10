@@ -33,7 +33,7 @@ def respond():
         data = format_data_to_dict(float(text), time.time())
         insert_record_to_db("Patient", chat_id, data)
     else:
-        unknown_message = "Sorry I do not recognise that"
+        unknown_message = "Sorry I do not recognise that.\n To submit your glucose, type in your reading (in mg/dL), e.g. 120."
         bot.sendMessage(chat_id = chat_id, text = unknown_message, reply_to_message_id = msg_id)
 
     return "response ok"
@@ -72,5 +72,5 @@ def index():
     return '.'
 
 if __name__ == "__main__":
-    app.run(threaded = True, debug=True)
+    app.run(threaded = True)
     # print(bot.get_me())
