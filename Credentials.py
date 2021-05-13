@@ -1,5 +1,6 @@
 import requests
 import json
+import os
 
 class Credentials:
     def __init__(self):
@@ -26,9 +27,11 @@ class Credentials:
         self.DB_URL = DB_URL
 
     def retrieve_credentials(self):
-        config_var_url = "https://api.heroku.com/apps/health-recorder-app/config-vars"
-        headers = {'Accept': 'application/vnd.heroku+json; version=3'}
-        response = requests.get(config_var_url, headers=headers)
-        json_data = json.loads(response.text) 
-        self.set_token(json_data["BOT_TOKEN"])
-        self.set_DB_URL(json_data["DB_URL"])
+        # config_var_url = "https://api.heroku.com/apps/health-recorder-app/config-vars"
+        # headers = {'Accept': 'application/vnd.heroku+json; version=3'}
+        # response = requests.get(config_var_url, headers=headers)
+        # json_data = json.loads(response.text) 
+        # self.set_token(json_data["BOT_TOKEN"])
+        # self.set_DB_URL(json_data["DB_URL"])
+        self.set_token(os.environ['BOT_TOKEN'])
+        self.set_DB_URL(os.environ['DB_URL'])
