@@ -15,5 +15,6 @@ class Reminder:
     def start_scheduler(self):
         scheduler = BackgroundScheduler()
         chat_ids = self.storage.get_chat_ids("Patient")
-        scheduler.add_job(self.send_reminder, 'cron', hour = 9, args=[chat_ids])
+        scheduler.add_job(self.send_reminder, 'cron', hour = '6,10', args=[chat_ids])
+        scheduler.add_job(self.send_reminder, 'cron', hour = '16,19', args=[chat_ids])
         scheduler.start()

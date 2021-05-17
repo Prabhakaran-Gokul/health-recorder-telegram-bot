@@ -1,7 +1,8 @@
+from Statistics import Statistics
 from flask import Flask, request
 import telegram 
+
 from datetime import datetime
-from firebase import firebase
 
 from Credentials import Credentials
 from Storage import Storage
@@ -13,7 +14,7 @@ global TOKEN
 
 credentials = Credentials()
 credentials.retrieve_credentials()
-# credentials.set_localhost("https://48f7d2af6a7a.ngrok.io/")
+# credentials.set_localhost("https://60d244d9c179.ngrok.io/")
 
 storage = Storage()
 storage.authenticate(credentials.get_DB_URL())
@@ -24,6 +25,7 @@ bot = telegram.Bot(token=TOKEN)
 reminder = Reminder(bot, storage)
 reminder.start_scheduler()
 
+stats = Statistics(storage)
 
 # start flask app 
 app = Flask(__name__)
@@ -45,6 +47,9 @@ def respond():
     if text == "/start":
         bot_welcome = "hello there!"
         bot.sendMessage(chat_id = chat_id, text = bot_welcome, reply_to_message_id = msg_id)
+    elif text == "graph":
+        graph_file = stats.generate_graph(chat_id)
+        bot.send_photo(chat_id = chat_id, photo = open(graph_file, 'rb'))
     elif isValidValue(text):
         value_recorded = "You have recorded a blood glucose level of {}".format(text)
         bot.sendMessage(chat_id = chat_id, text = value_recorded, reply_to_message_id = msg_id)
@@ -69,12 +74,6 @@ def format_data_to_dict(value, timestamp):
         "glucose_level": value
     }
     return data
-
-# def insert_record_to_db(user_type, chat_id, data):
-#     fb = firebase.FirebaseApplication(credentials.get_DB_URL(), None)
-#     result = fb.post(user_type + '/' + str(chat_id), data)
-
-
 
 @app.route("/set_webhook", methods = ["GET", "POST"])
 def set_webhook():
