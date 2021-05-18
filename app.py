@@ -3,6 +3,7 @@ from flask import Flask, request
 import telegram 
 
 from datetime import datetime
+import os
 
 from Credentials import Credentials
 from Storage import Storage
@@ -14,7 +15,7 @@ global TOKEN
 
 credentials = Credentials()
 credentials.retrieve_credentials()
-# credentials.set_localhost("https://60d244d9c179.ngrok.io/")
+credentials.set_localhost("https://a5315d6b3e22.ngrok.io/")
 
 storage = Storage()
 storage.authenticate(credentials.get_DB_URL())
@@ -50,6 +51,7 @@ def respond():
     elif text == "graph":
         graph_file = stats.generate_graph(chat_id)
         bot.send_photo(chat_id = chat_id, photo = open(graph_file, 'rb'))
+        os.remove(graph_file)
     elif isValidValue(text):
         value_recorded = "You have recorded a blood glucose level of {}".format(text)
         bot.sendMessage(chat_id = chat_id, text = value_recorded, reply_to_message_id = msg_id)

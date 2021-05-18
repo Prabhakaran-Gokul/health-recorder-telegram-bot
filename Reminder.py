@@ -1,4 +1,3 @@
-from Storage import Storage
 from apscheduler.schedulers.background import BackgroundScheduler
 
 class Reminder:
@@ -13,7 +12,8 @@ class Reminder:
             self.bot.sendMessage(chat_id = chat_id, text = self.reminder_message)
 
     def start_scheduler(self):
-        scheduler = BackgroundScheduler()
+        #setting timezone to singapore
+        scheduler = BackgroundScheduler(timezone ="Asia/Singapore")
         chat_ids = self.storage.get_chat_ids("Patient")
         scheduler.add_job(self.send_reminder, 'cron', hour = '6,10', args=[chat_ids])
         scheduler.add_job(self.send_reminder, 'cron', hour = '16,19', args=[chat_ids])

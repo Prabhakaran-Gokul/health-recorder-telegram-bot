@@ -1,9 +1,13 @@
 import matplotlib.pyplot as plt
 from datetime import datetime
+import os 
 
 class Statistics:
     def __init__(self, storage):
         self.storage = storage
+        self.temp_folder = "tmp"
+        if not os.path.isdir(self.temp_folder):
+            os.mkdir("./{}/".format(self.temp_folder))
 
     def generate_graph(self, chat_id):
         #get values for the x and y axis
@@ -12,11 +16,17 @@ class Statistics:
         formatted_timestamps = self.format_timestamps(timestamps)
 
         #plot and save graph
-        plt.scatter(formatted_timestamps, glucose_levels)
-        plt.plot(formatted_timestamps, glucose_levels, '-o')
+        fig, ax = plt.subplots()
+        ax.scatter(formatted_timestamps, glucose_levels)
+        ax.plot(formatted_timestamps, glucose_levels, '-o')
+        ax.set_ylim(bottom=0)
+        ax.set_ylabel("Glucose Level")
+        ax.set_xlabel("Time")
+        plt.title("Glucose levels vs Time")
         plt.gcf().autofmt_xdate()
-        plt.savefig('{}.png'.format(chat_id))
-        return "{}.png".format(chat_id)
+
+        fig.savefig("{}/{}.png".format(self.temp_folder, chat_id))
+        return "{}/{}.png".format(self.temp_folder, chat_id)
 
     #convert timestamp to datetime object
     def format_timestamps(self, timestamps):
