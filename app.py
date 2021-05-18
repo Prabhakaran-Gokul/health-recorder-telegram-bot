@@ -15,7 +15,7 @@ global TOKEN
 
 credentials = Credentials()
 credentials.retrieve_credentials()
-credentials.set_localhost("https://a5315d6b3e22.ngrok.io/")
+# credentials.set_localhost("https://a5315d6b3e22.ngrok.io/")
 
 storage = Storage()
 storage.authenticate(credentials.get_DB_URL())
